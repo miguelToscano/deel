@@ -5,6 +5,7 @@ const PROFILE_HAS_NOT_ENOUGH_BALANCE = 'PROFILE_HAS_NOT_ENOUGH_BALANCE';
 const PROFILE_HAS_TOO_MUCH_DEBT = 'PROFILE_HAS_TOO_MUCH_DEBT';
 const CONTRACT_NOT_FOUND = 'CONTRACT_NOT_FOUND';
 const CONTRACT_NOT_IN_PROGRESS = 'CONTRACT_NOT_IN_PROGRESS';
+const BAD_PARAMS = 'BAD_PARAMS';
 const INTERNAL_SERVER = 'INTERNAL_SERVER';
 
 const errors = {
@@ -41,6 +42,10 @@ const errors = {
     code: INTERNAL_SERVER,
     message: 'Internal server error',
   },
+  [BAD_PARAMS]: {
+    code: BAD_PARAMS,
+    message: 'Bad params',
+  },
 };
 
 const DEFAULT_ERROR = INTERNAL_SERVER;
@@ -61,5 +66,6 @@ module.exports = {
   PROFILE_HAS_TOO_MUCH_DEBT,
   CONTRACT_NOT_FOUND,
   CONTRACT_NOT_IN_PROGRESS,
+  BAD_PARAMS,
   INTERNAL_SERVER,
 };

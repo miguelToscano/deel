@@ -1,7 +1,7 @@
 // const { errors, CONTRACT_NOT_FOUND,  } = require('../../application/errors');
 
 const {
-  PROFILE_NOT_FOUND, PROFILE_HAS_NOT_ENOUGH_BALANCE, CONTRACT_NOT_FOUND, CONTRACT_NOT_IN_PROGRESS, JOB_NOT_FOUND, JOB_ALREADY_PAID, INTERNAL_SERVER,
+  PROFILE_NOT_FOUND, PROFILE_HAS_NOT_ENOUGH_BALANCE, CONTRACT_NOT_FOUND, CONTRACT_NOT_IN_PROGRESS, JOB_NOT_FOUND, JOB_ALREADY_PAID, INTERNAL_SERVER, BAD_PARAMS,
 } = require('../../application/errors');
 
 const errorMapper = {
@@ -28,6 +28,10 @@ const errorMapper = {
   [PROFILE_HAS_NOT_ENOUGH_BALANCE]: {
     status: 400,
     message: 'Profile has not enough balance',
+  },
+  [BAD_PARAMS]: {
+    status: 400,
+    message: 'Bad params',
   },
   [INTERNAL_SERVER]: {
     status: 500,

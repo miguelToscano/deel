@@ -5,7 +5,19 @@ const { createError, PROFILE_NOT_FOUND, PROFILE_HAS_TOO_MUCH_DEBT } = require('.
 
 const MAX_DEBT_THRESHOLD_MULTIPLIER = 0.25;
 
-const deposit = async (from, to, amount) => {
+const validateDeposit = async (profile, amount, options) => {
+  if (profile.get('type') === 'client') {
+    const unpaidJobs = await jobsRepository.getUnpaidJobs(profile.get('id'), options);
+
+    const totalDebt = unpaidJobs.reduce((acc, job) => acc + job.get('price'), 0);
+
+    if (amount > totalDebt * MAX_DEBT_THRESHOLD_MULTIPLIER) {
+      throw createError(PROFILE_HAS_TOO_MUCH_DEBT);
+    }
+  }
+};
+
+const deposit = async (fromId, toId, amount) => {
   const transaction = await sequelize.transaction();
 
   const options = {
@@ -15,23 +27,17 @@ const deposit = async (from, to, amount) => {
 
   try {
     const [fromProfile, toProfile] = await Promise.all([
-      profilesRepository.getProfileById(from, options),
-      profilesRepository.getProfileById(to, options),
+      profilesRepository.getProfileById(fromId, options),
+      profilesRepository.getProfileById(toId, options),
     ]);
 
     if (!fromProfile || !toProfile) {
       throw createError(PROFILE_NOT_FOUND);
     }
 
-    const unpaidJobs = await jobsRepository.getUnpaidJobs(from, options);
+    await validateDeposit(fromProfile, amount, options);
 
-    const totalDebt = unpaidJobs.reduce((acc, job) => acc + job.get('price'), 0);
-
-    if (amount > totalDebt * MAX_DEBT_THRESHOLD_MULTIPLIER) {
-      throw createError(PROFILE_HAS_TOO_MUCH_DEBT);
-    }
-
-    await profilesRepository.addBalance(to, amount, options);
+    await profilesRepository.addBalance(toId, amount, options);
 
     // await new Promise((resolve) => setTimeout(resolve, 5000));
 

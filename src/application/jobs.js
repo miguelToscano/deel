@@ -45,12 +45,12 @@ const payJob = async (profileId, jobId) => {
       throw createError(JOB_ALREADY_PAID);
     }
 
-    const [payingProfile, profileToBePaid] = await Promise.all([
+    const [payingProfile, payedProfile] = await Promise.all([
       profilesRepository.getProfileById(profileId, options),
       profilesRepository.getProfileById(job.get('Contract').get('ContractorId'), options),
     ]);
 
-    if (!profileToBePaid || !payingProfile) {
+    if (!payedProfile || !payingProfile) {
       throw createError(PROFILE_NOT_FOUND);
     }
 
@@ -59,7 +59,7 @@ const payJob = async (profileId, jobId) => {
     }
 
     await Promise.all([
-      profilesRepository.addBalance(profileToBePaid.get('id'), job.get('price'), options),
+      profilesRepository.addBalance(payedProfile.get('id'), job.get('price'), options),
       profilesRepository.subtractBalance(payingProfile.get('id'), job.get('price'), options),
       jobsRepository.markJobAsPaid(profileId, jobId, options),
     ]);

@@ -1,4 +1,7 @@
-const { Profile } = require('../model');
+const { Op, col } = require('sequelize');
+const {
+  Profile, Contract, Job, sequelize,
+} = require('../model');
 
 const getProfileById = async (profileId, options) => {
   try {
@@ -20,6 +23,7 @@ const getProfiles = async () => {
   }
 };
 
+// fix
 const getProfileDebt = async (profileId, options) => {
   try {
     const profile = await Profile.findOne({ where: { id: profileId }, ...options });
@@ -56,10 +60,83 @@ const addBalance = async (profileId, amount, options) => {
   }
 };
 
+const getBestProfession = async (startTime, endTime) => {
+  try {
+    console.log(startTime, endTime)
+    const bestProfessions = await Profile.findAll({
+      attributes: ['profession', [sequelize.fn('SUM', col('Contractor.Jobs.price')), 'total']],
+      where: {
+        type: 'contractor'
+      },
+      group: ['profession'],
+      include: [
+        {
+          model: Contract,
+          as: 'Contractor',
+          attributes: [],
+          include: [
+            {
+              model: Job,
+              attributes: [],
+              where: {
+                paid: true,
+                paymentDate: {
+                  [Op.between]: [startTime, endTime],
+                }
+              }
+            }
+          ]
+        }
+      ],
+      order: [["total", "DESC"]]
+    });
+
+    return bestProfessions && bestProfessions.length && bestProfessions[0].get('total') && bestProfessions[0];
+
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    throw (error);
+  }
+};
+
+const getBestClients = async (startTime, endTime, limit) => {
+  try {
+    console.log(startTime, endTime);
+    console.log('antes de la query');
+    const bestClients = await Profile.findAll({
+      subQuery: false,
+      attributes: ["id", [sequelize.fn("SUM", col("Client.Jobs.price")), "paid"], [sequelize.literal("firstName || ' ' || lastName"), "fullName"]],
+      group: ["Profile.id"],
+      order: [["paid", "DESC"]],
+      where: { type: 'client' },
+      include: [{
+        model: Contract,
+        attributes: [],
+        as: "Client",
+        include: [{
+          model: Job,
+          attributes: [],
+          where: { paid: true, paymentDate: { [Op.between]: [startTime, endTime] } }
+        }]
+      }],
+      limit
+    });
+
+    console.log(bestClients);
+
+    return bestClients;
+  } catch (error) {
+    console.log(JSON.stringify(error));
+    throw (error);
+  }
+}
+
 module.exports = {
   getProfileById,
   getProfiles,
   getProfileDebt,
   subtractBalance,
   addBalance,
+  getBestProfession,
+  getBestClients,
 };

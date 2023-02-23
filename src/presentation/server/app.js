@@ -10,6 +10,7 @@ const jobsController = require('../controllers/jobs');
 const contractsController = require('../controllers/contracts');
 const profilesController = require('../controllers/profiles');
 const balancesController = require('../controllers/balances');
+const adminsController = require('../controllers/admins');
 
 const app = express();
 
@@ -28,6 +29,8 @@ app.get('/jobs/unpaid', getProfile, jobsController.getUnpaidJobs);
 app.get('/jobs', getProfile, jobsController.getJobs);
 app.post('/jobs/:id/pay', getProfile, jobsController.payJob);
 app.post('/balance/deposit/:userId', getProfile, balancesController.deposit);
+app.get('/admin/best-profession', getProfile, adminsController.getBestProfession);
+app.get('/admin/best-clients', getProfile, adminsController.getBestClients);
 
 app.get('/profiles', profilesController.getProfiles);
 

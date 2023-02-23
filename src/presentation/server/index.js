@@ -2,7 +2,7 @@ const app = require('./app');
 
 async function init() {
   try {
-    app.listen(3000, () => {
+    app.listen(3001, () => {
       console.log('Express App Listening on Port 3001');
     });
   } catch (error) {

@@ -1,9 +1,9 @@
 const express = require('express');
-const balancesController = require('../controllers/balances');
+const profilesController = require('../controllers/profiles');
 const { getProfile } = require('../middleware/getProfile');
 
 const router = express.Router();
 
-router.post('/deposit/:userId', getProfile, balancesController.deposit);
+router.get('/', getProfile, profilesController.getProfiles);
 
 module.exports = router;

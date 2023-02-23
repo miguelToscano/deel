@@ -12,10 +12,23 @@ const profilesController = require('../controllers/profiles');
 const balancesController = require('../controllers/balances');
 const adminsController = require('../controllers/admins');
 
+const adminsRouter = require('../routers/admin');
+const balancesRouter = require('../routers/balances');
+const contractsRouter = require('../routers/contracts');
+const jobsRouter = require('../routers/jobs');
+const profilesRouter = require('../routers/profiles');
+
 const app = express();
 
 app.use(bodyParser.json());
 app.use(morgan('dev'));
+
+app.use('/admin', adminsRouter);
+app.use('/balances', balancesRouter);
+app.use('/contracts', contractsRouter);
+app.use('/jobs', jobsRouter);
+app.use('/profiles', profilesRouter);
+
 app.set('sequelize', sequelize);
 app.set('models', sequelize.models);
 

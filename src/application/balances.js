@@ -1,7 +1,9 @@
 const profilesRepository = require('../infrastructure/repositories/profiles');
 const jobsRepository = require('../infrastructure/repositories/jobs');
 const { sequelize } = require('../infrastructure/model');
-const { createError, PROFILE_NOT_FOUND, PROFILE_HAS_TOO_MUCH_DEBT } = require('./errors');
+const {
+  createError, PROFILE_NOT_FOUND, PROFILE_HAS_TOO_MUCH_DEBT, BAD_PARAMS,
+} = require('./errors');
 
 const MAX_DEBT_THRESHOLD_MULTIPLIER = 0.25;
 
@@ -26,6 +28,10 @@ const deposit = async (fromId, toId, amount) => {
   };
 
   try {
+    if (amount === 0) {
+      throw createError(BAD_PARAMS);
+    }
+
     const [fromProfile, toProfile] = await Promise.all([
       profilesRepository.getProfileById(fromId, options),
       profilesRepository.getProfileById(toId, options),

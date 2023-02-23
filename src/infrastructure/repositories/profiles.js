@@ -62,11 +62,11 @@ const addBalance = async (profileId, amount, options) => {
 
 const getBestProfession = async (startTime, endTime) => {
   try {
-    console.log(startTime, endTime)
+    console.log(startTime, endTime);
     const bestProfessions = await Profile.findAll({
       attributes: ['profession', [sequelize.fn('SUM', col('Contractor.Jobs.price')), 'total']],
       where: {
-        type: 'contractor'
+        type: 'contractor',
       },
       group: ['profession'],
       include: [
@@ -82,17 +82,16 @@ const getBestProfession = async (startTime, endTime) => {
                 paid: true,
                 paymentDate: {
                   [Op.between]: [startTime, endTime],
-                }
-              }
-            }
-          ]
-        }
+                },
+              },
+            },
+          ],
+        },
       ],
-      order: [["total", "DESC"]]
+      order: [['total', 'DESC']],
     });
 
     return bestProfessions && bestProfessions.length && bestProfessions[0].get('total') && bestProfessions[0];
-
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);
@@ -105,31 +104,31 @@ const getBestClients = async (startTime, endTime, limit) => {
     console.log('antes de la query');
     const bestClients = await Profile.findAll({
       subQuery: false,
-      attributes: ["id", [sequelize.fn("SUM", col("Client.Jobs.price")), "paid"], [sequelize.literal("firstName || ' ' || lastName"), "fullName"]],
-      group: ["Profile.id"],
-      order: [["paid", "DESC"]],
+      attributes: ['id', [sequelize.fn('SUM', col('Client.Jobs.price')), 'paid'], [sequelize.literal("firstName || ' ' || lastName"), 'fullName']],
+      group: ['Profile.id'],
+      order: [['paid', 'DESC']],
       where: { type: 'client' },
       include: [{
         model: Contract,
         attributes: [],
-        as: "Client",
+        as: 'Client',
         include: [{
           model: Job,
           attributes: [],
-          where: { paid: true, paymentDate: { [Op.between]: [startTime, endTime] } }
-        }]
+          where: { paid: true, paymentDate: { [Op.between]: [startTime, endTime] } },
+        }],
       }],
-      limit
+      limit,
     });
 
     console.log(bestClients);
 
-    return bestClients;
+    return bestClients && bestClients.length && bestClients[0].get('paid') && bestClients.filter((bestClient) => bestClient.get('paid') !== null);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);
   }
-}
+};
 
 module.exports = {
   getProfileById,

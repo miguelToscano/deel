@@ -32,7 +32,7 @@ const getBestProfession = async (startTime, endTime) => {
 
     const bestProfession = await profilesRepository.getBestProfession(formattedStartTime, formattedEndTime);
 
-    return bestProfession;
+    return bestProfession ? bestProfession.dataValues : {};
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);
@@ -49,13 +49,12 @@ const getBestClients = async (startTime, endTime, limit = GET_BEST_CLIENTS_DEFAU
     const formattedEndTime = dayjs(endTime).format(TIME_FORMAT);
     console.log('llega aca');
     const bestClients = await profilesRepository.getBestClients(formattedStartTime, formattedEndTime, limit);
-    console.log(bestClients);
-    return bestClients;
+    return bestClients && bestClients.length ? bestClients.map((bestClient) => bestClient.dataValues) : [];
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);
   }
-}
+};
 
 module.exports = {
   getProfiles,

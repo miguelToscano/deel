@@ -13,7 +13,10 @@ const getContractById = async (req, res, next) => {
 const getNonTerminatedContracts = async (req, res, next) => {
   try {
     const contracts = await contractsService.getNonTerminatedContracts(req.profile.id);
-    return res.status(200).json(contracts);
+    return res.status(200).json({
+      count: contracts.length,
+      contracts,
+    });
   } catch (error) {
     console.log(JSON.stringify(error));
     next(error);

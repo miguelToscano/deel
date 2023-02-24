@@ -22,14 +22,12 @@ const getBestProfession = async (startTime, endTime) => {
       throw createError(BAD_PARAMS);
     }
 
-    console.log(startTime, endTime);
-
     const formattedStartTime = dayjs(startTime).format(TIME_FORMAT);
     const formattedEndTime = dayjs(endTime).format(TIME_FORMAT);
 
     const bestProfession = await profilesRepository.getBestProfession(formattedStartTime, formattedEndTime);
 
-    return bestProfession ? bestProfession.dataValues : {};
+    return bestProfession || {};
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);

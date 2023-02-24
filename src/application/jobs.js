@@ -10,7 +10,6 @@ const { sequelize } = require('../infrastructure/model');
 const getUnpaidJobs = async (profileId) => {
   try {
     const jobs = await jobsRepository.getUnpaidJobs(profileId, IN_PROGRESS_STATUS);
-    console.log(jobs);
     return jobs;
   } catch (error) {
     console.log(JSON.stringify(error));
@@ -21,7 +20,6 @@ const getUnpaidJobs = async (profileId) => {
 const getJobs = async (profileId) => {
   try {
     const jobs = await jobsRepository.getJobs(profileId);
-    console.log(jobs);
     return jobs;
   } catch (error) {
     console.log(JSON.stringify(error));
@@ -65,8 +63,6 @@ const payJob = async (profileId, jobId) => {
     if (payingProfile.balance < job.price) {
       throw createError(PROFILE_HAS_NOT_ENOUGH_BALANCE);
     }
-
-    console.log('llega aca');
 
     await Promise.all([
       profilesRepository.addBalance(payedProfile.id, job.price, options),

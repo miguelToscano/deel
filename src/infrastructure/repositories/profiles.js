@@ -56,7 +56,6 @@ const addBalance = async (profileId, amount, options) => {
 
 const getBestProfession = async (startTime, endTime) => {
   try {
-    console.log(startTime, endTime);
     const bestProfessions = await Profile.findAll({
       attributes: ['profession', [sequelize.fn('SUM', col('Contractor.Jobs.price')), 'total']],
       where: {
@@ -94,8 +93,6 @@ const getBestProfession = async (startTime, endTime) => {
 
 const getBestClients = async (startTime, endTime, limit) => {
   try {
-    console.log(startTime, endTime);
-    console.log('antes de la query');
     const bestClients = await Profile.findAll({
       subQuery: false,
       attributes: ['id', [sequelize.fn('SUM', col('Client.Jobs.price')), 'paid'], [sequelize.literal("firstName || ' ' || lastName"), 'fullName']],

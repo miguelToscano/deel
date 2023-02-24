@@ -14,7 +14,6 @@ const getBestProfession = async (req, res, next) => {
 const getBestClients = async (req, res, next) => {
   try {
     const { start, end, limit } = req.query;
-    console.log(start, end, limit);
     const bestClients = await profilesService.getBestClients(start, end, limit);
     return res.status(200).json(bestClients);
   } catch (error) {

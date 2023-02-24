@@ -9,11 +9,11 @@ const {
 const MAX_DEBT_THRESHOLD_MULTIPLIER = 0.25;
 
 const validateDeposit = async (profileId, amount, options) => {
-    const unpaidJobs = await jobsRepository.getUnpaidJobs(profileId, IN_PROGRESS_STATUS, options);
-    const totalDebt = unpaidJobs.reduce((acc, job) => acc + job.price, 0);
-    if (totalDebt && amount > totalDebt * MAX_DEBT_THRESHOLD_MULTIPLIER) {
-      throw createError(PROFILE_HAS_TOO_MUCH_DEBT);
-    }
+  const unpaidJobs = await jobsRepository.getUnpaidJobs(profileId, IN_PROGRESS_STATUS, options);
+  const totalDebt = unpaidJobs.reduce((acc, job) => acc + job.price, 0);
+  if (totalDebt && amount > totalDebt * MAX_DEBT_THRESHOLD_MULTIPLIER) {
+    throw createError(PROFILE_HAS_TOO_MUCH_DEBT);
+  }
 };
 
 const deposit = async (fromId, toId, amount) => {

@@ -5,7 +5,7 @@ const serializeJob = (job) => {
   const serializedJob = { ...job.dataValues };
   delete serializedJob.Contract;
   return serializedJob;
-}
+};
 
 const getUnpaidJobs = async (profileId, unpaidStatus, options) => {
   try {

@@ -4,7 +4,7 @@ const { Contract } = require('../model');
 const serializeContract = (contract) => {
   const serializedContract = { ...contract.dataValues };
   return serializedContract;
-}
+};
 
 const getContracts = async () => {
   try {

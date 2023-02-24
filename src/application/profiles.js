@@ -27,9 +27,6 @@ const getBestProfession = async (startTime, endTime) => {
     const formattedStartTime = dayjs(startTime).format(TIME_FORMAT);
     const formattedEndTime = dayjs(endTime).format(TIME_FORMAT);
 
-    const test = new Date(formattedStartTime);
-    console.log(test);
-
     const bestProfession = await profilesRepository.getBestProfession(formattedStartTime, formattedEndTime);
 
     return bestProfession ? bestProfession.dataValues : {};

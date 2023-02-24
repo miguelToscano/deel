@@ -23,17 +23,6 @@ const getProfiles = async () => {
   }
 };
 
-// fix
-const getProfileDebt = async (profileId, options) => {
-  try {
-    const profile = await Profile.findOne({ where: { id: profileId }, ...options });
-    return profile.get('debt');
-  } catch (error) {
-    console.log(JSON.stringify(error));
-    throw (error);
-  }
-};
-
 const subtractBalance = async (profileId, amount, options) => {
   try {
     const profile = await Profile.findOne({ where: { id: profileId }, ...options });
@@ -133,7 +122,6 @@ const getBestClients = async (startTime, endTime, limit) => {
 module.exports = {
   getProfileById,
   getProfiles,
-  getProfileDebt,
   subtractBalance,
   addBalance,
   getBestProfession,

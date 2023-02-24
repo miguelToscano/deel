@@ -12,6 +12,7 @@
   },
   "scripts": {
     "start": "nodemon ./src/presentation/server",
+    "start:prod": "node ./src/presentation/server",
     "seed": "node ./scripts/seedDb.js",
     "lint": "eslint ./src --fix",
     "test": "mocha ./tests --exit --recursive"

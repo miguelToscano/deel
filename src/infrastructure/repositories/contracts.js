@@ -1,11 +1,16 @@
 const { Op } = require('sequelize');
 const { Contract } = require('../model');
 
+const serializeContract = (contract) => {
+  const serializedContract = { ...contract.dataValues };
+  return serializedContract;
+}
+
 const getContracts = async () => {
   try {
     const contracts = await Contract.findAll();
 
-    return contracts;
+    return contracts.map(serializeContract);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;
@@ -21,7 +26,7 @@ const getContractById = async (profileId, contractId) => {
       },
     });
 
-    return contract;
+    return contract && serializeContract(contract);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;
@@ -39,7 +44,7 @@ const getNonTerminatedContracts = async (profileId) => {
       },
     });
 
-    return contracts;
+    return contracts.map(serializeContract);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;

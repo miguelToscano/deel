@@ -44,9 +44,8 @@ const getBestClients = async (startTime, endTime, limit = GET_BEST_CLIENTS_DEFAU
 
     const formattedStartTime = dayjs(startTime).format(TIME_FORMAT);
     const formattedEndTime = dayjs(endTime).format(TIME_FORMAT);
-    console.log('llega aca');
     const bestClients = await profilesRepository.getBestClients(formattedStartTime, formattedEndTime, limit);
-    return bestClients && bestClients.length ? bestClients.map((bestClient) => bestClient.dataValues) : [];
+    return bestClients || [];
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);

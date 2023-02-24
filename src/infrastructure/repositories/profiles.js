@@ -3,10 +3,15 @@ const {
   Profile, Contract, Job, sequelize,
 } = require('../model');
 
+const serializeProfile = (profile) => {
+  const serializedProfile = { ...profile.dataValues };
+  return serializedProfile;
+};
+
 const getProfileById = async (profileId, options) => {
   try {
     const profile = await Profile.findOne({ where: { id: profileId }, ...options });
-    return profile;
+    return profile && serializeProfile(profile);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);
@@ -16,7 +21,7 @@ const getProfileById = async (profileId, options) => {
 const getProfiles = async () => {
   try {
     const profiles = await Profile.findAll();
-    return profiles;
+    return profiles.map(serializeProfile);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);
@@ -80,7 +85,7 @@ const getBestProfession = async (startTime, endTime) => {
       order: [['total', 'DESC']],
     });
 
-    return bestProfessions && bestProfessions.length && bestProfessions[0].get('total') && bestProfessions[0];
+    return bestProfessions && bestProfessions.length && bestProfessions[0].get('total') && bestProfessions[0].dataValues;
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);
@@ -110,9 +115,7 @@ const getBestClients = async (startTime, endTime, limit) => {
       limit,
     });
 
-    console.log(bestClients);
-
-    return bestClients && bestClients.length && bestClients[0].get('paid') && bestClients.filter((bestClient) => bestClient.get('paid') !== null);
+    return bestClients && bestClients.length && bestClients[0].get('paid') && bestClients.filter((bestClient) => bestClient.get('paid') !== null).map(serializeProfile);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);

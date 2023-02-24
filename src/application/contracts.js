@@ -1,6 +1,10 @@
 const contractsRepository = require('../infrastructure/repositories/contracts');
 const { createError, CONTRACT_NOT_FOUND } = require('./errors');
 
+const IN_PROGRESS_STATUS = 'in_progress';
+const TERMINATED_STATUS = 'terminated';
+const NEW_STATUS = 'new';
+
 const getContractById = async (profileId, contractId) => {
   try {
     const contract = await contractsRepository.getContractById(profileId, contractId);
@@ -30,4 +34,7 @@ const getNonTerminatedContracts = async (profileId) => {
 module.exports = {
   getContractById,
   getNonTerminatedContracts,
+  IN_PROGRESS_STATUS,
+  TERMINATED_STATUS,
+  NEW_STATUS,
 };

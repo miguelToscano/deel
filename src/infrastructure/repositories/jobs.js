@@ -1,7 +1,13 @@
 const { Op } = require('sequelize');
 const { Job, Contract } = require('../model');
 
-const getUnpaidJobs = async (profileId, options) => {
+const serializeJob = (job) => {
+  const serializedJob = { ...job.dataValues };
+  delete serializedJob.Contract;
+  return serializedJob;
+}
+
+const getUnpaidJobs = async (profileId, unpaidStatus, options) => {
   try {
     const jobs = await Job.findAll({
       where: {
@@ -14,7 +20,7 @@ const getUnpaidJobs = async (profileId, options) => {
         as: 'Contract',
         where: {
           status: {
-            [Op.eq]: 'in_progress',
+            [Op.eq]: unpaidStatus,
 
           },
           [Op.or]: [{ ContractorId: profileId }, { ClientId: profileId }],
@@ -23,15 +29,7 @@ const getUnpaidJobs = async (profileId, options) => {
       ...options,
     });
 
-    return jobs.map((job) => ({
-      id: job.dataValues.id,
-      title: job.dataValues.title,
-      description: job.dataValues.description,
-      price: job.dataValues.price,
-      paid: job.dataValues.paid,
-      paymentDate: job.dataValues.paymentDate,
-      contractId: job.dataValues.ContractId,
-    }));
+    return jobs.map(serializeJob);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;
@@ -60,17 +58,7 @@ const getUnpaidJobById = async (profileId, jobId, options) => {
       ...options,
     });
 
-    if (!job) return null;
-
-    return {
-      id: job.dataValues.id,
-      title: job.dataValues.title,
-      description: job.dataValues.description,
-      price: job.dataValues.price,
-      paid: job.dataValues.paid,
-      paymentDate: job.dataValues.paymentDate,
-      contractId: job.dataValues.ContractId,
-    };
+    return job && serializeJob(job);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;
@@ -90,15 +78,7 @@ const getJobs = async (profileId, options) => {
       ...options,
     });
 
-    return jobs.map((job) => ({
-      id: job.dataValues.id,
-      title: job.dataValues.title,
-      description: job.dataValues.description,
-      price: job.dataValues.price,
-      paid: job.dataValues.paid,
-      paymentDate: job.dataValues.paymentDate,
-      contractId: job.dataValues.ContractId,
-    }));
+    return jobs && jobs.map(serializeJob);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;
@@ -124,7 +104,7 @@ const getJobById = async (profileId, jobId, options) => {
       ...options,
     });
 
-    return job;
+    return job && serializeJob(job);
   } catch (error) {
     console.log(JSON.stringify(error));
     throw error;
@@ -153,10 +133,10 @@ const markJobAsPaid = async (profileId, jobId, options) => {
       ...options,
     });
 
-    if (!job) return null;
-
-    job.paid = true;
-    job.paymentDate = new Date();
+    job.set({
+      paid: true,
+      paymentDate: new Date(),
+    });
 
     await job.save({ ...options });
 

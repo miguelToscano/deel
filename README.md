@@ -96,3 +96,22 @@ It would be great for example if you'd write some unit test / simple frontend de
 When you have finished the assignment, zip your repo (make sure to include .git folder) and send us the zip.
 
 Thank you and good luck! 🙏
+
+### How to run the project 
+
+#### Manually
+
+`npm i`
+`npm run seed`
+`npm start`
+
+#### Using Docker
+`docker build -t deel-challenge .`
+`docker run -dp 3001:3001 deel-challenge`
+
+### Things i would add
+
+- A code coverage tool to check how well tested the application is
+- More unit tests
+- Integration tests to test the entire app as a whole
+- Environment variables usage

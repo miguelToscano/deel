@@ -11,18 +11,8 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "X-RapidAPI-Key",
-						"value": "3fae477100msh64628c77a401489p1f5a63jsn5567cd036fcd",
-						"type": "text"
-					},
-					{
-						"key": "X-RapidAPI-Host",
-						"value": "api-football-v1.p.rapidapi.com",
-						"type": "text"
-					},
-					{
 						"key": "profile_id",
-						"value": "1",
+						"value": "2",
 						"type": "text"
 					}
 				],
@@ -42,28 +32,18 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3001/contracts/3",
+			"name": "http://localhost:3001/contracts/:id",
 			"request": {
 				"method": "GET",
 				"header": [
 					{
-						"key": "X-RapidAPI-Key",
-						"value": "3fae477100msh64628c77a401489p1f5a63jsn5567cd036fcd",
-						"type": "text"
-					},
-					{
-						"key": "X-RapidAPI-Host",
-						"value": "api-football-v1.p.rapidapi.com",
-						"type": "text"
-					},
-					{
 						"key": "profile_id",
-						"value": "2",
+						"value": "1",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://localhost:3001/contracts/3",
+					"raw": "http://localhost:3001/contracts/2",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -71,7 +51,7 @@
 					"port": "3001",
 					"path": [
 						"contracts",
-						"3"
+						"2"
 					]
 				}
 			},
@@ -83,15 +63,45 @@
 				"method": "GET",
 				"header": [
 					{
-						"key": "X-RapidAPI-Key",
-						"value": "3fae477100msh64628c77a401489p1f5a63jsn5567cd036fcd",
+						"key": "profile_id",
+						"value": "1",
 						"type": "text"
-					},
-					{
-						"key": "X-RapidAPI-Host",
-						"value": "api-football-v1.p.rapidapi.com",
-						"type": "text"
-					},
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3001/admin/best-clients?start=1900-01-11&end=2025-02-25&limit=4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"admin",
+						"best-clients"
+					],
+					"query": [
+						{
+							"key": "start",
+							"value": "1900-01-11"
+						},
+						{
+							"key": "end",
+							"value": "2025-02-25"
+						},
+						{
+							"key": "limit",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3001/admin/best-clients?start=1995-01-11&end=2026-02-25&limit=5",
+			"request": {
+				"method": "GET",
+				"header": [
 					{
 						"key": "profile_id",
 						"value": "1",
@@ -99,7 +109,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://localhost:3001/admin/best-profession?start=2000-01-11&end=2025-02-25",
+					"raw": "http://localhost:3001/admin/best-profession?start=2000-01-11&end=2026-02-25&limit=5",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -116,52 +126,6 @@
 						},
 						{
 							"key": "end",
-							"value": "2025-02-25"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3001/admin/best-clients?start=1995-01-11&end=2026-02-25&limit=5",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "X-RapidAPI-Key",
-						"value": "3fae477100msh64628c77a401489p1f5a63jsn5567cd036fcd",
-						"type": "text"
-					},
-					{
-						"key": "X-RapidAPI-Host",
-						"value": "api-football-v1.p.rapidapi.com",
-						"type": "text"
-					},
-					{
-						"key": "profile_id",
-						"value": "1",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://localhost:3001/admin/best-clients?start=1995-01-11&end=2026-02-25&limit=5",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"admin",
-						"best-clients"
-					],
-					"query": [
-						{
-							"key": "start",
-							"value": "1995-01-11"
-						},
-						{
-							"key": "end",
 							"value": "2026-02-25"
 						},
 						{
@@ -174,49 +138,13 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3001/balance/deposit/3",
+			"name": "http://localhost:3001/balances/deposit/:userId",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "profile_id",
-						"value": "1",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"amount\": 100000\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3001/balance/deposit/3",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"balance",
-						"deposit",
-						"3"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:3001/jobs/2/pay",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "profile_id",
-						"value": "1",
+						"value": "2",
 						"type": "text"
 					}
 				],
@@ -230,7 +158,43 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3001/jobs/2/pay",
+					"raw": "http://localhost:3001/balances/deposit/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"balances",
+						"deposit",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3001/jobs/:jobId/pay",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "profile_id",
+						"value": "2",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 50\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3001/jobs/3/pay",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -238,8 +202,33 @@
 					"port": "3001",
 					"path": [
 						"jobs",
-						"2",
+						"3",
 						"pay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:3001/contracts",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "profile_id",
+						"value": "1",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3001/contracts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"contracts"
 					]
 				}
 			},

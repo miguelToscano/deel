@@ -1,7 +1,7 @@
 const dayjs = require('dayjs');
 
 const profilesRepository = require('../infrastructure/repositories/profiles');
-const { createError, BAD_PARAMS } = require('./errors');
+const { createError, BAD_PARAMS, BEST_PROFESSION_NOT_FOUND } = require('./errors');
 
 const TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const GET_BEST_CLIENTS_DEFAULT_LIMIT = 2;
@@ -27,7 +27,11 @@ const getBestProfession = async (startTime, endTime) => {
 
     const bestProfession = await profilesRepository.getBestProfession(formattedStartTime, formattedEndTime);
 
-    return bestProfession || {};
+    if (!bestProfession) {
+      throw createError(BEST_PROFESSION_NOT_FOUND);
+    }
+
+    return bestProfession;
   } catch (error) {
     console.log(JSON.stringify(error));
     throw (error);

@@ -5,6 +5,7 @@ const {
   CONTRACT_NOT_FOUND,
   CONTRACT_NOT_IN_PROGRESS,
   JOB_NOT_FOUND, JOB_ALREADY_PAID,
+  BEST_PROFESSION_NOT_FOUND,
   INTERNAL_SERVER,
   BAD_PARAMS,
 } = require('../../application/errors');
@@ -37,6 +38,10 @@ const errorMapper = {
   [PROFILE_HAS_TOO_MUCH_DEBT]: {
     status: 400,
     message: 'Profile has too much debt',
+  },
+  [BEST_PROFESSION_NOT_FOUND]: {
+    status: 404,
+    message: 'Best profession not found',
   },
   [BAD_PARAMS]: {
     status: 400,
